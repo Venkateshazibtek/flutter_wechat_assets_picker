@@ -23,8 +23,9 @@ import '../models/path_wrapper.dart';
 /// and how to get the thumbnail data of a path.
 abstract class AssetPickerProvider<Asset, Path> extends ChangeNotifier {
   AssetPickerProvider({
-    this.maxAssets = defaultMaxAssetsCount,
+    this.maxAssets = 9,
     this.pageSize = defaultAssetsPerPage,
+    this.enablePopup = true,
     this.pathThumbnailSize = defaultPathThumbnailSize,
     List<Asset>? selectedAssets,
   })  : assert(maxAssets > 0, 'maxAssets must be greater than 0.'),
@@ -43,6 +44,9 @@ abstract class AssetPickerProvider<Asset, Path> extends ChangeNotifier {
   ///
   /// Use `null` to display all assets into a single grid.
   final int pageSize;
+
+  final bool enablePopup;
+
 
   /// Thumbnail size for path selector.
   /// 路径选择器中缩略图的大小
@@ -253,6 +257,7 @@ class DefaultAssetPickerProvider
   DefaultAssetPickerProvider({
     super.selectedAssets,
     super.maxAssets,
+    super.enablePopup,
     super.pageSize,
     super.pathThumbnailSize,
     this.requestType = RequestType.image,
@@ -277,6 +282,7 @@ class DefaultAssetPickerProvider
     this.sortPathsByModifiedDate = false,
     this.filterOptions,
     super.maxAssets,
+    super.enablePopup,
     super.pageSize = 80,
     super.pathThumbnailSize,
   }) {

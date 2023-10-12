@@ -14,8 +14,8 @@ import 'enums.dart';
 class AssetPickerConfig {
   const AssetPickerConfig({
     this.selectedAssets,
-    this.maxAssets = defaultMaxAssetsCount,
-    this.pageSize = defaultAssetsPerPage,
+    this.maxAssets = 9,
+    this.pageSize = 80,
     this.gridThumbnailSize = defaultAssetGridPreviewSize,
     this.pathThumbnailSize = defaultPathThumbnailSize,
     this.previewThumbnailSize,
@@ -36,11 +36,13 @@ class AssetPickerConfig {
     this.shouldRevertGrid,
     this.limitedPermissionOverlayPredicate,
     this.pathNameBuilder,
+    this.onPressed,
+    this.enablePopup = true,
   })  : assert(
           pickerTheme == null || themeColor == null,
           'pickerTheme and themeColor cannot be set at the same time.',
         ),
-        assert(maxAssets > 0, 'maxAssets must be greater than 0.'),
+        assert(maxAssets >= 1, 'maxAssets must be greater than 1.'),
         assert(pageSize > 0, 'pageSize must be greater than 0.'),
         assert(gridCount > 0, 'gridCount must be greater than 0.'),
         assert(
@@ -48,16 +50,12 @@ class AssetPickerConfig {
           'pageSize must be a multiple of gridCount.',
         ),
         assert(
-          specialPickerType != SpecialPickerType.wechatMoment ||
-              requestType == RequestType.common,
+          specialPickerType != SpecialPickerType.wechatMoment || requestType == RequestType.common,
           'SpecialPickerType.wechatMoment and requestType '
           'cannot be set at the same time.',
         ),
         assert(
-          (specialItemBuilder == null &&
-                  identical(specialItemPosition, SpecialItemPosition.none)) ||
-              (specialItemBuilder != null &&
-                  !identical(specialItemPosition, SpecialItemPosition.none)),
+          (specialItemBuilder == null && identical(specialItemPosition, SpecialItemPosition.none)) || (specialItemBuilder != null && !identical(specialItemPosition, SpecialItemPosition.none)),
           'Custom item did not set properly.',
         );
 
@@ -74,6 +72,8 @@ class AssetPickerConfig {
   ///
   /// Use `null` to display all assets into a single grid.
   final int pageSize;
+  final Function? onPressed;
+  final bool enablePopup;
 
   /// Thumbnail size in the grid.
   /// 预览时网络的缩略图大小

@@ -26,6 +26,7 @@ dependencies:
   photo_manager: ^2.7.0
   provider: ^6.0.5
   video_player: ^2.7.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_lints: any
@@ -53,3 +54,37 @@ screenshots:
     path: screenshots/README_8.webp
   - description: 'Screenshot 9'
     path: screenshots/README_9.webp
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: NimbusBold
+      fonts:
+        - asset: fonts/Nimbus-Sans-D-OT-Bold-Extended_32745.ttf
+    - family: NimbusRegular
+      fonts:
+        - asset: fonts/Nimbus-Sans-D-OT-Regular-Extended_32755.ttf
+    - family: NimbusRegularItalic
+      fonts:
+        - asset: fonts/Nimbus-Sans-D-OT-Regular-Italic_32756.ttf
+    - family: NimbusLight
+      fonts:
+        - asset: fonts/Nimbus-Sans-D-OT-Light_32752.ttf
+    - family: Nimbus
+      fonts:
+        - asset: fonts/Nimbus-Sans-D-OT_32758.ttf
+    - family: NimbusBlackBold
+      fonts:
+        - asset: fonts/Nimbus-Sans-D-OT-Black-Extended_32740.ttf
+    - family: NimbusItalic
+      fonts:
+        - asset: fonts/Nimbus-Sans-D-OT-Bold-Italic_32746.ttf
+    - family: NimbusLightItalic
+      fonts:
+        - asset: fonts/Nimbus-Sans-D-OT-Light-Italic_32751.ttf
+    - family: NimbusSansBold
+      fonts:
+        - asset: fonts/Nimbus-Sans-D-OT-Bold_32747.ttf
+    - family: NimbusReg
+      fonts:
+        - asset: fonts/nimbus-sans-l.regular.otf

@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/config.dart';
 import '../delegates/asset_picker_builder_delegate.dart';
@@ -38,14 +39,12 @@ class AssetPicker<Asset, Path> extends StatefulWidget {
   /// {@macro wechat_assets_picker.delegates.AssetPickerDelegate.pickAssets}
   static Future<List<AssetEntity>?> pickAssets(
     BuildContext context, {
-    Key? key,
     AssetPickerConfig pickerConfig = const AssetPickerConfig(),
     bool useRootNavigator = true,
     AssetPickerPageRouteBuilder<List<AssetEntity>>? pageRouteBuilder,
   }) {
     return _pickerDelegate.pickAssets(
       context,
-      key: key,
       pickerConfig: pickerConfig,
       useRootNavigator: useRootNavigator,
       pageRouteBuilder: pageRouteBuilder,
@@ -53,17 +52,14 @@ class AssetPicker<Asset, Path> extends StatefulWidget {
   }
 
   /// {@macro wechat_assets_picker.delegates.AssetPickerDelegate.pickAssetsWithDelegate}
-  static Future<List<Asset>?> pickAssetsWithDelegate<Asset, Path,
-      PickerProvider extends AssetPickerProvider<Asset, Path>>(
+  static Future<List<Asset>?> pickAssetsWithDelegate<Asset, Path, PickerProvider extends AssetPickerProvider<Asset, Path>>(
     BuildContext context, {
-    Key? key,
     required AssetPickerBuilderDelegate<Asset, Path> delegate,
     bool useRootNavigator = true,
     AssetPickerPageRouteBuilder<List<Asset>>? pageRouteBuilder,
   }) {
     return _pickerDelegate.pickAssetsWithDelegate<Asset, Path, PickerProvider>(
       context,
-      key: key,
       delegate: delegate,
       useRootNavigator: useRootNavigator,
       pageRouteBuilder: pageRouteBuilder,
@@ -86,18 +82,17 @@ class AssetPicker<Asset, Path> extends StatefulWidget {
   }
 
   @override
-  AssetPickerState<Asset, Path> createState() =>
-      AssetPickerState<Asset, Path>();
+  AssetPickerState<Asset, Path> createState() => AssetPickerState<Asset, Path>();
 }
 
-class AssetPickerState<Asset, Path> extends State<AssetPicker<Asset, Path>>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+class AssetPickerState<Asset, Path> extends State<AssetPicker<Asset, Path>> with TickerProviderStateMixin, WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     AssetPicker.registerObserve(_onLimitedAssetsUpdated);
     widget.builder.initState(this);
+    enablePopup();
   }
 
   @override
@@ -130,5 +125,77 @@ class AssetPickerState<Asset, Path> extends State<AssetPicker<Asset, Path>>
   @override
   Widget build(BuildContext context) {
     return widget.builder.build(context);
+  }
+
+  void enablePopup() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? response = prefs.getString('gallery');
+    if (response == null || response == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await firstTimeShowPopupDialog(context);
+      });
+    }
+  }
+
+  Future<Future> firstTimeShowPopupDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: const Color(0xff000000).withOpacity(0.6),
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+              insetPadding: EdgeInsets.zero,
+              contentPadding: EdgeInsets.zero,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              backgroundColor: Colors.transparent,
+              content: Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    padding: const EdgeInsets.only(top: 25, left: 15, right: 15),
+                    height: 242,
+                    width: 300,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Select multiple photos/videos from your library',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'NimbusBold',
+                            color: Color(0xffF0F2F2),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        SizedBox(
+                          width: 158,
+                          height: 33,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              final SharedPreferences prefs = await SharedPreferences.getInstance();
+                              Navigator.of(context).maybePop();
+                              await prefs.setString('gallery', 'true');
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: const Color(0Xff0cb373),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(03)),
+                            ),
+                            child: const Text(
+                              'Okay!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16, color: Color(0xff000000), fontFamily: 'NimbusBold', fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              )),
+        );
+      },
+    );
   }
 }

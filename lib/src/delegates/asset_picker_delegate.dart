@@ -79,6 +79,8 @@ class AssetPickerDelegate {
       sortPathDelegate: pickerConfig.sortPathDelegate,
       filterOptions: pickerConfig.filterOptions,
       initializeDelayDuration: route.transitionDuration,
+      enablePopup: pickerConfig.enablePopup,
+
     );
     final Widget picker = AssetPicker<AssetEntity, AssetPathEntity>(
       key: key,
