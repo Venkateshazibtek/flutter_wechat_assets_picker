@@ -171,7 +171,7 @@ class EnglishAssetPickerTextDelegate extends AssetPickerTextDelegate {
   String get languageCode => 'en';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => 'Next';
 
   @override
   String get cancel => 'Cancel';

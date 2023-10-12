@@ -775,6 +775,7 @@ class FileAssetPickerBuilder
               borderRadius: BorderRadius.circular(3.0),
             ),
             onPressed: () {
+
               if (provider.isSelectedNotEmpty) {
                 Navigator.of(context).pop(provider.selectedAssets);
               }
