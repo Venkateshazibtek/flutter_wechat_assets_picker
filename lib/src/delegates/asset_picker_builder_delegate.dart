@@ -1986,15 +1986,29 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             ),
           ),
         );
-        final Widget selectorWidget = InkWell(
-          // behavior: HitTestBehavior.opaque,
+        final Widget selectorWidget = GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: () => selectAsset(context, asset, index, selected),
-          child: Container(
-            margin: EdgeInsets.all(indicatorSize / 4),
-            width: isPreviewEnabled ? indicatorSize : null,
-            height: isPreviewEnabled ? indicatorSize : null,
-            alignment: AlignmentDirectional.topEnd,
-            child: (!isPreviewEnabled && isSingleAssetMode && !selected) ? const SizedBox.shrink() : innerSelector,
+          child: Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.all(indicatorSize / 4),
+                width: isPreviewEnabled ? indicatorSize : null,
+                height: isPreviewEnabled ? indicatorSize : null,
+                alignment: AlignmentDirectional.topEnd,
+                child: (!isPreviewEnabled && isSingleAssetMode && !selected) ? const SizedBox.shrink() : innerSelector,
+              ),
+              Positioned(
+                  right: 0,
+                  child: InkWell(
+                    onTap: () => selectAsset(context, asset, index, selected),
+                    child: Container(
+                      width: 100,
+                      height: 50,
+                      color: Colors.transparent,
+                    ),
+                  )),
+            ],
           ),
         );
         if (isPreviewEnabled) {
