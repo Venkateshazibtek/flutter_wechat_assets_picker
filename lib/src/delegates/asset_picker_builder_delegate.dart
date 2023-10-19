@@ -1451,8 +1451,6 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   Widget confirmButton(BuildContext context) {
     return Consumer<DefaultAssetPickerProvider>(
       builder: (_, DefaultAssetPickerProvider p, __) {
-        final bool isSelectedNotEmpty = p.isSelectedNotEmpty;
-        final bool shouldAllowConfirm = isSelectedNotEmpty || p.previousSelectedAssets.isNotEmpty;
         return MaterialButton(
           minWidth: p.isSelectedNotEmpty ? 48 : 20,
           height: 27,
@@ -1462,7 +1460,12 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(3),
           ),
-          onPressed: p.isSelectedNotEmpty ? () => Navigator.of(context).maybePop(p.selectedAssets) : null,
+          onPressed: p.isSelectedNotEmpty
+              ? () {
+                  Navigator.of(context).maybePop(p.selectedAssets);
+                  print('Idsssss ${p.selectedAssets[0].id}');
+                }
+              : null,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           child: ScaleText(
             p.isSelectedNotEmpty && !isSingleAssetMode
@@ -1508,10 +1511,26 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             ),
           ),
         ),
-        if (type == SpecialImageType.gif) // 如果为GIF则显示标识
+        if (type == SpecialImageType.gif) // If it is a GIF, display the logo
           gifIndicator(context, asset),
-        if (asset.type == AssetType.video) // 如果为视频则显示标识
+        if (asset.type == AssetType.video) // If it is a video, display the logo
           videoIndicator(context, asset),
+        // if (true)
+        //   Container(
+        //     alignment: Alignment.center,
+        //     height: MediaQuery.of(context).size.height,
+        //     width: MediaQuery.of(context).size.width,
+        //     child: Column(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Icon(Icons.abc),
+        //         Text(
+        //           'Uploaded',
+        //           style: TextStyle(fontSize: 12, color: Color(0xfff0f2f2), fontFamily: 'NimbusRegular'),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
         dateIndicator(context, asset),
       ],
     );
@@ -1979,11 +1998,17 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           ),
         );
         if (isPreviewEnabled) {
-          return PositionedDirectional(
-            top: 0,
-            end: 0,
-            child: selectorWidget,
-          );
+          return Platform.isAndroid
+              ? PositionedDirectional(
+                  top: 0,
+                  end: 0,
+                  child: selectorWidget,
+                )
+              : Positioned(
+                  top: 0,
+                  right: -6,
+                  child: selectorWidget,
+                );
         }
         return selectorWidget;
       },
@@ -2159,7 +2184,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
       padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(
         bottom: context.bottomPadding,
       ),
-      color: theme.primaryColor.withOpacity(isAppleOS(context) ? .9 : 1),
+      color: Colors.black,
       child: Row(
         children: <Widget>[
           if (isPreviewEnabled) previewButton(context),
