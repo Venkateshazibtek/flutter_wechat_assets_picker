@@ -2018,42 +2018,79 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   @override
   Widget selectedBackdrop(BuildContext context, int index, AssetEntity asset) {
     final double indicatorSize = MediaQuery.sizeOf(context).width / gridCount / 3;
-    return Positioned.fill(
-      child: GestureDetector(
-        onTap: isPreviewEnabled ? () => viewAsset(context, index, asset) : null,
-        child: Consumer<DefaultAssetPickerProvider>(
-          builder: (_, DefaultAssetPickerProvider p, __) {
-            final int index = p.selectedAssets.indexOf(asset);
-            final bool selected = index != -1;
-            return AnimatedContainer(
-              duration: switchingPathDuration,
-              padding: EdgeInsets.all(indicatorSize * .35),
-              color: selected ? theme.colorScheme.primary.withOpacity(.45) : theme.colorScheme.background.withOpacity(.1),
-              child: selected && !isSingleAssetMode
-                  ? Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: SizedBox(
-                        height: indicatorSize / 2.5,
-                        child: FittedBox(
-                          alignment: AlignmentDirectional.topStart,
-                          fit: BoxFit.cover,
-                          child: Text(
-                            '${index + 1}',
-                            style: TextStyle(
-                              color: theme.textTheme.bodyLarge?.color?.withOpacity(.75),
-                              fontWeight: FontWeight.w600,
-                              height: 1,
+    return Platform.isAndroid
+        ? Positioned.fill(
+            child: GestureDetector(
+              onTap: isPreviewEnabled ? () => viewAsset(context, index, asset) : null,
+              child: Consumer<DefaultAssetPickerProvider>(
+                builder: (_, DefaultAssetPickerProvider p, __) {
+                  final int index = p.selectedAssets.indexOf(asset);
+                  final bool selected = index != -1;
+                  return AnimatedContainer(
+                    duration: switchingPathDuration,
+                    padding: EdgeInsets.all(indicatorSize * .35),
+                    color: selected ? theme.colorScheme.primary.withOpacity(.45) : theme.backgroundColor.withOpacity(.1),
+                    child: selected && !isSingleAssetMode
+                        ? Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: SizedBox(
+                              height: indicatorSize / 2.5,
+                              child: FittedBox(
+                                alignment: AlignmentDirectional.topStart,
+                                fit: BoxFit.cover,
+                                child: Text(
+                                  '${index + 1}',
+                                  style: TextStyle(
+                                    color: theme.textTheme.bodyText1?.color?.withOpacity(.75),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            );
-          },
-        ),
-      ),
-    );
+                          )
+                        : const SizedBox.shrink(),
+                  );
+                },
+              ),
+            ),
+          )
+        : Positioned.fill(
+            child: GestureDetector(
+              onTap: isPreviewEnabled ? () => viewAsset(context, index, asset) : null,
+              child: Consumer<DefaultAssetPickerProvider>(
+                builder: (_, DefaultAssetPickerProvider p, __) {
+                  final int index = p.selectedAssets.indexOf(asset);
+                  final bool selected = index != -1;
+                  return AnimatedContainer(
+                    duration: switchingPathDuration,
+                    padding: EdgeInsets.all(indicatorSize * .35),
+                    color: selected ? theme.colorScheme.primary.withOpacity(.45) : theme.backgroundColor.withOpacity(.1),
+                    child: selected && !isSingleAssetMode
+                        ? Align(
+                            alignment: AlignmentDirectional.topEnd,
+                            child: SizedBox(
+                              height: indicatorSize / 2.5,
+                              child: FittedBox(
+                                alignment: AlignmentDirectional.topStart,
+                                fit: BoxFit.cover,
+                                child: Text(
+                                  '${index + 1}',
+                                  style: TextStyle(
+                                    color: theme.textTheme.bodyText1?.color?.withOpacity(.75),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  );
+                },
+              ),
+            ),
+          );
   }
 
   /// Videos often contains various of color in the cover,
