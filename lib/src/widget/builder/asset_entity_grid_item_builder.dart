@@ -14,12 +14,12 @@ class AssetEntityGridItemBuilder extends StatefulWidget {
     super.key,
     required this.image,
     required this.failedItemBuilder,
-    required this.enablePopup,
+    required this.uploadedIds,
   });
 
   final AssetEntityImageProvider image;
   final WidgetBuilder failedItemBuilder;
-  final bool enablePopup;
+  final List<String>? uploadedIds;
 
   @override
   AssetEntityGridItemWidgetState createState() => AssetEntityGridItemWidgetState();

@@ -41,6 +41,7 @@ abstract class AssetPickerBuilderDelegate<Asset, Path> {
   AssetPickerBuilderDelegate(
       {required this.initialPermission,
       this.gridCount = 4,
+      this.uploadedIds,
       this.pickerTheme,
       this.specialItemPosition = SpecialItemPosition.none,
       this.specialItemBuilder,
@@ -68,6 +69,8 @@ abstract class AssetPickerBuilderDelegate<Asset, Path> {
   /// Assets count for the picker.
   /// 资源网格数
   final int gridCount;
+
+  final List<String>? uploadedIds;
 
   /// Main color for the picker.
   /// 选择器的主题色
@@ -671,6 +674,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     required this.provider,
     required super.initialPermission,
     super.gridCount,
+    super.uploadedIds,
     super.pickerTheme,
     super.specialItemPosition,
     super.specialItemBuilder,
@@ -1500,6 +1504,9 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     } else if (imageProvider.imageFileType == ImageFileType.heic) {
       type = SpecialImageType.heic;
     }
+    print("Images Id ${imageProvider.entity.id}");
+    print("Fetch Id  ${uploadedIds}");
+    print("MAthc value ${imageProvider.entity.id == uploadedIds!.contains('1000000381')}");
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -1507,7 +1514,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             child: AssetEntityGridItemBuilder(
               image: imageProvider,
               failedItemBuilder: failedItemBuilder,
-              enablePopup: false,
+              uploadedIds: uploadedIds,
             ),
           ),
         ),
@@ -1515,22 +1522,22 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           gifIndicator(context, asset),
         if (asset.type == AssetType.video) // If it is a video, display the logo
           videoIndicator(context, asset),
-        // if (true)
-        //   Container(
-        //     alignment: Alignment.center,
-        //     height: MediaQuery.of(context).size.height,
-        //     width: MediaQuery.of(context).size.width,
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         Icon(Icons.abc),
-        //         Text(
-        //           'Uploaded',
-        //           style: TextStyle(fontSize: 12, color: Color(0xfff0f2f2), fontFamily: 'NimbusRegular'),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
+        if (uploadedIds != null && uploadedIds!.contains(imageProvider.entity.id))
+          Container(
+            alignment: Alignment.center,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.abc),
+                Text(
+                  'Uploaded',
+                  style: TextStyle(fontSize: 12, color: Color(0xfff0f2f2), fontFamily: 'NimbusRegular'),
+                ),
+              ],
+            ),
+          ),
         dateIndicator(context, asset),
       ],
     );

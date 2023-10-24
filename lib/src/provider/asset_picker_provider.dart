@@ -24,6 +24,7 @@ import '../models/path_wrapper.dart';
 abstract class AssetPickerProvider<Asset, Path> extends ChangeNotifier {
   AssetPickerProvider({
     this.maxAssets = 9,
+    this.uploadedIds,
     this.pageSize = defaultAssetsPerPage,
     this.enablePopup = true,
     this.pathThumbnailSize = defaultPathThumbnailSize,
@@ -46,6 +47,9 @@ abstract class AssetPickerProvider<Asset, Path> extends ChangeNotifier {
   final int pageSize;
 
   final bool enablePopup;
+
+  final List<String>? uploadedIds;
+
 
 
   /// Thumbnail size for path selector.
@@ -257,6 +261,7 @@ class DefaultAssetPickerProvider
   DefaultAssetPickerProvider({
     super.selectedAssets,
     super.maxAssets,
+    super.uploadedIds,
     super.enablePopup,
     super.pageSize,
     super.pathThumbnailSize,
@@ -282,6 +287,7 @@ class DefaultAssetPickerProvider
     this.sortPathsByModifiedDate = false,
     this.filterOptions,
     super.maxAssets,
+    super.uploadedIds,
     super.enablePopup,
     super.pageSize = 80,
     super.pathThumbnailSize,

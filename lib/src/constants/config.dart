@@ -15,6 +15,7 @@ class AssetPickerConfig {
   const AssetPickerConfig({
     this.selectedAssets,
     this.maxAssets = 9,
+    this.uploadedIds,
     this.pageSize = 80,
     this.gridThumbnailSize = defaultAssetGridPreviewSize,
     this.pathThumbnailSize = defaultPathThumbnailSize,
@@ -62,6 +63,8 @@ class AssetPickerConfig {
   /// Selected assets.
   /// 已选中的资源
   final List<AssetEntity>? selectedAssets;
+
+  final List<String>? uploadedIds;
 
   /// Maximum count for asset selection.
   /// 资源选择的最大数量
