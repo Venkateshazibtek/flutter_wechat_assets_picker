@@ -28,6 +28,7 @@ dependencies:
   video_player: ^2.7.0
   shared_preferences: ^2.2.2
   flutter_svg_provider: ^1.0.6
+  flutter_svg: ^2.0.8
 
 dev_dependencies:
   flutter_lints: any
@@ -59,7 +60,7 @@ screenshots:
 flutter:
   uses-material-design: true
   assets:
-    - images/
+    - assets/uploaded_icon.svg
   fonts:
     - family: NimbusBold
       fonts:

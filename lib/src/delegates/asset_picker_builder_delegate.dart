@@ -11,7 +11,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +31,6 @@ import '../widget/builder/value_listenable_builder_2.dart';
 import '../widget/gaps.dart';
 import '../widget/platform_progress_indicator.dart';
 import '../widget/scale_text.dart';
-import 'package:flutter_svg/svg.dart' as svg;
 
 /// The delegate to build the whole picker's components.
 ///
@@ -1469,6 +1468,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           onPressed: p.isSelectedNotEmpty
               ? () {
                   Navigator.of(context).maybePop(p.selectedAssets);
+                  print(p.selectedAssets[0].id);
                 }
               : null,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -1505,6 +1505,8 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     } else if (imageProvider.imageFileType == ImageFileType.heic) {
       type = SpecialImageType.heic;
     }
+    final String assetName = 'assets/uploaded_icon.svg';
+
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -1528,7 +1530,8 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                svg.SvgPicture.asset('assets/images/uploaded_icon.svg'),
+                SvgPicture.asset(assetName, color: Color(0xffC0C1C1)),
+                SizedBox(height: 6),
                 Text(
                   'Uploaded',
                   style: TextStyle(fontSize: 12, color: Color(0xffC0C1C1), fontFamily: 'NimbusRegular'),
@@ -2004,15 +2007,14 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                 child: (!isPreviewEnabled && isSingleAssetMode && !selected) ? const SizedBox.shrink() : innerSelector,
               ),
               Positioned(
-                  right: 0,
                   child: InkWell(
-                    onTap: () => selectAsset(context, asset, index, selected),
-                    child: Container(
-                      width: 100,
-                      height: 50,
-                      color: Colors.transparent,
-                    ),
-                  )),
+                onTap: () => selectAsset(context, asset, index, selected),
+                child: Container(
+                  width: 50,
+                  height: 100,
+                  color: Colors.transparent,
+                ),
+              )),
             ],
           ),
         );
