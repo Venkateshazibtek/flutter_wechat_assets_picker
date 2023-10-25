@@ -11,6 +11,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,7 @@ import '../widget/builder/value_listenable_builder_2.dart';
 import '../widget/gaps.dart';
 import '../widget/platform_progress_indicator.dart';
 import '../widget/scale_text.dart';
+import 'package:flutter_svg/svg.dart' as svg;
 
 /// The delegate to build the whole picker's components.
 ///
@@ -1530,10 +1532,10 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.abc),
+                svg.SvgPicture.asset('assets/images/uploaded_icon.svg'),
                 Text(
                   'Uploaded',
-                  style: TextStyle(fontSize: 12, color: Color(0xfff0f2f2), fontFamily: 'NimbusRegular'),
+                  style: TextStyle(fontSize: 12, color: Color(0xffC0C1C1), fontFamily: 'NimbusRegular'),
                 ),
               ],
             ),
