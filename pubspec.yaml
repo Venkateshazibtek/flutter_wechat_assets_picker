@@ -60,7 +60,7 @@ screenshots:
 flutter:
   uses-material-design: true
   assets:
-    - packages/flutter_wechat_assets_picker/assets/uploaded_icon.svg
+    - packages/wechat_assets_picker/assets/uploaded_icon.svg
   fonts:
     - family: NimbusBold
       fonts:
