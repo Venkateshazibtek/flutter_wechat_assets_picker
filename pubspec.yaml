@@ -64,31 +64,31 @@ flutter:
   fonts:
     - family: NimbusBold
       fonts:
-        - asset: fonts/Nimbus-Sans-D-OT-Bold-Extended_32745.ttf
+        - asset: packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT-Bold-Extended_32745.ttf
     - family: NimbusRegular
       fonts:
-        - asset: fonts/Nimbus-Sans-D-OT-Regular-Extended_32755.ttf
+        - asset: packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT-Regular-Extended_32755.ttf
     - family: NimbusRegularItalic
       fonts:
-        - asset: fonts/Nimbus-Sans-D-OT-Regular-Italic_32756.ttf
+        - asset: packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT-Regular-Italic_32756.ttf
     - family: NimbusLight
       fonts:
-        - asset: fonts/Nimbus-Sans-D-OT-Light_32752.ttf
+        - asset: packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT-Light_32752.ttf
     - family: Nimbus
       fonts:
-        - asset: fonts/Nimbus-Sans-D-OT_32758.ttf
+        - asset: packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT_32758.ttf
     - family: NimbusBlackBold
       fonts:
-        - asset: fonts/Nimbus-Sans-D-OT-Black-Extended_32740.ttf
+        - asset: packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT-Black-Extended_32740.ttf
     - family: NimbusItalic
       fonts:
-        - asset: fonts/Nimbus-Sans-D-OT-Bold-Italic_32746.ttf
+        - asset: packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT-Bold-Italic_32746.ttf
     - family: NimbusLightItalic
       fonts:
-        - asset: fonts/Nimbus-Sans-D-OT-Light-Italic_32751.ttf
+        - asset: packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT-Light-Italic_32751.ttf
     - family: NimbusSansBold
       fonts:
-        - asset: fonts/Nimbus-Sans-D-OT-Bold_32747.ttf
+        - asset: packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT-Bold_32747.ttf
     - family: NimbusReg
       fonts:
-        - asset: fonts/nimbus-sans-l.regular.otf
+        - asset: packages/wechat_assets_picker/fonts/nimbus-sans-l.regular.otf

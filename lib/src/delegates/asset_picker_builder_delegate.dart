@@ -1525,6 +1525,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             alignment: Alignment.center,
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
+            color: Color(0xff010101).withOpacity(0.6),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -1532,7 +1533,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                 SizedBox(height: 6),
                 Text(
                   'Uploaded',
-                  style: TextStyle(fontSize: 12, color: Color(0xffC0C1C1), fontFamily: 'NimbusRegular'),
+                  style: TextStyle(fontSize: 12, color: Color(0xffC0C1C1), fontWeight: FontWeight.w400, fontFamily: 'packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT_32758.ttf'),
                 ),
               ],
             ),
