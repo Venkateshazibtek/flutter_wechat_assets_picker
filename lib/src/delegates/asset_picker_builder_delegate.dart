@@ -1528,7 +1528,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset('assets/uploaded_icon.svg'),
+                SvgPicture.asset('packages/wechat_assets_picker/assets/uploaded_icon.svg'),
                 SizedBox(height: 6),
                 Text(
                   'Uploaded',
