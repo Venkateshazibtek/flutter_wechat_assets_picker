@@ -1505,8 +1505,6 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     } else if (imageProvider.imageFileType == ImageFileType.heic) {
       type = SpecialImageType.heic;
     }
-    final String assetName = 'assets/uploaded_icon.svg';
-
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -1530,7 +1528,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(assetName, color: Color(0xffC0C1C1)),
+                SvgPicture.asset('assets/uploaded_icon.svg'),
                 SizedBox(height: 6),
                 Text(
                   'Uploaded',
