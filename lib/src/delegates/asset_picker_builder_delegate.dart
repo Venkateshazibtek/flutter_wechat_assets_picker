@@ -1469,7 +1469,6 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           onPressed: p.isSelectedNotEmpty
               ? () {
                   Navigator.of(context).maybePop(p.selectedAssets);
-                  print('Idsssss ${p.selectedAssets[0].id}');
                 }
               : null,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -1506,9 +1505,6 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     } else if (imageProvider.imageFileType == ImageFileType.heic) {
       type = SpecialImageType.heic;
     }
-    print("Images Id ${imageProvider.entity.id}");
-    print("Fetch Id  ${uploadedIds}");
-    print("MAthc value ${imageProvider.entity.id == uploadedIds!.contains('1000000381')}");
     return Stack(
       children: <Widget>[
         Positioned.fill(
