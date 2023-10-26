@@ -1525,15 +1525,15 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             alignment: Alignment.center,
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            color: Color(0xff010101).withOpacity(0.6),
+            color: Color(0xff000000).withOpacity(0.75),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset('packages/wechat_assets_picker/assets/uploaded_icon.svg'),
+                SvgPicture.asset('packages/wechat_assets_picker/assets/uploaded_icon_fill.svg'),
                 SizedBox(height: 6),
                 Text(
                   'Uploaded',
-                  style: TextStyle(fontSize: 12, color: Color(0xffC0C1C1), fontWeight: FontWeight.w400, fontFamily: 'packages/wechat_assets_picker/fonts/Nimbus-Sans-D-OT_32758.ttf'),
+                  style: TextStyle(fontSize: 12, color: Color(0xffC0C1C1), fontWeight: FontWeight.bold, fontFamily: 'packages/wechat_assets_picker/fonts/nimbus-sans-l.regular.otf'),
                 ),
               ],
             ),
