@@ -2190,7 +2190,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                       textDelegate.durationIndicatorBuilder(
                         Duration(seconds: asset.duration),
                       ),
-                      style: const TextStyle(color: Colors.white, fontSize: 11),
+                      style:  TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d): Colors.white, fontSize: 11),
                       strutStyle: const StrutStyle(
                         forceStrutHeight: true,
                         height: 1.4,
@@ -2229,7 +2229,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             top: 5,
             child: Text(
               asset.createDateTime.month.toString() + '.' + asset.createDateTime.day.toString() + '.' + asset.createDateTime.year.toString().substring(2),
-              style: const TextStyle(color: Colors.white, fontSize: 11),
+              style: TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
             ),
           );
   }
