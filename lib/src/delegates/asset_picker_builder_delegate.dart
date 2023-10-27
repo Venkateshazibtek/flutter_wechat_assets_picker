@@ -2190,7 +2190,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                       textDelegate.durationIndicatorBuilder(
                         Duration(seconds: asset.duration),
                       ),
-                      style:  TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d): Colors.white, fontSize: 11),
+                      style: TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
                       strutStyle: const StrutStyle(
                         forceStrutHeight: true,
                         height: 1.4,
@@ -2202,9 +2202,9 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                       ),
                     ),
                     // const Spacer(),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(top: 3.5, right: 3),
-                      child: Icon(Icons.videocam, size: 16, color: Colors.white),
+                      child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white),
                     ),
                   ],
                 ),
