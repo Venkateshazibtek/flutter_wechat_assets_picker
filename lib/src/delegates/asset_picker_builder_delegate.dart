@@ -1978,7 +1978,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           decoration: BoxDecoration(
             border: !selected
                 ? Border.all(
-                    color: context.theme.unselectedWidgetColor,
+                    color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
                     width: indicatorSize / 25,
                   )
                 : null,
@@ -2141,16 +2141,16 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                 padding: const EdgeInsetsDirectional.only(start: 32),
                 child: Row(
                   children: <Widget>[
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(top: 3.5, right: 3),
-                      child: Icon(Icons.videocam, size: 16, color: Colors.white),
+                      child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white),
                     ),
                     Expanded(
                       child: ScaleText(
                         textDelegate.durationIndicatorBuilder(
                           Duration(seconds: asset.duration),
                         ),
-                        style: const TextStyle(color: Colors.white, fontSize: 11),
+                        style: TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
                         strutStyle: const StrutStyle(
                           forceStrutHeight: true,
                           height: 1.4,
@@ -2220,7 +2220,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             top: 5,
             child: Text(
               asset.createDateTime.month.toString() + '.' + asset.createDateTime.day.toString() + '.' + asset.createDateTime.year.toString().substring(2),
-              style: const TextStyle(color: Colors.white, fontSize: 13),
+              style: TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
             ),
           )
         : Positioned(
@@ -2228,7 +2228,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             left: 2,
             top: 5,
             child: Text(
-              asset.createDateTime.month.toString() + '.' + asset.createDateTime.day.toString() + "." + asset.createDateTime.year.toString().substring(2),
+              asset.createDateTime.month.toString() + '.' + asset.createDateTime.day.toString() + '.' + asset.createDateTime.year.toString().substring(2),
               style: const TextStyle(color: Colors.white, fontSize: 11),
             ),
           );
