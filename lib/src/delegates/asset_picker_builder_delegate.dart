@@ -2,7 +2,7 @@
 // Use of this source code is governed by an Apache license that can be found
 // in the LICENSE file.
 
-import 'dart:io' show Platform;
+import 'dart:io' show File, Platform;
 import 'dart:math' as math;
 import 'dart:typed_data' as typed_data;
 import 'dart:ui' as ui;
@@ -41,24 +41,24 @@ import '../widget/scale_text.dart';
 abstract class AssetPickerBuilderDelegate<Asset, Path> {
   AssetPickerBuilderDelegate(
       {required this.initialPermission,
-        this.gridCount = 4,
-        this.uploadedIds,
-        this.pickerTheme,
-        this.specialItemPosition = SpecialItemPosition.none,
-        this.specialItemBuilder,
-        this.loadingIndicatorBuilder,
-        this.selectPredicate,
-        this.shouldRevertGrid,
-        this.limitedPermissionOverlayPredicate,
-        this.pathNameBuilder,
-        Color? themeColor,
-        AssetPickerTextDelegate? textDelegate,
-        Locale? locale,
-        this.onPress})
+      this.gridCount = 4,
+      this.uploadedIds,
+      this.pickerTheme,
+      this.specialItemPosition = SpecialItemPosition.none,
+      this.specialItemBuilder,
+      this.loadingIndicatorBuilder,
+      this.selectPredicate,
+      this.shouldRevertGrid,
+      this.limitedPermissionOverlayPredicate,
+      this.pathNameBuilder,
+      Color? themeColor,
+      AssetPickerTextDelegate? textDelegate,
+      Locale? locale,
+      this.onPress})
       : assert(
-  pickerTheme == null || themeColor == null,
-  'Theme and theme color cannot be set at the same time.',
-  ),
+          pickerTheme == null || themeColor == null,
+          'Theme and theme color cannot be set at the same time.',
+        ),
         themeColor = pickerTheme?.colorScheme.secondary ?? themeColor ?? defaultThemeColorWeChat {
     Singleton.textDelegate = textDelegate ?? assetPickerTextDelegateFromLocale(locale);
   }
@@ -149,17 +149,17 @@ abstract class AssetPickerBuilderDelegate<Asset, Path> {
   /// The color for interactive texts.
   /// 可交互的文字的颜色
   Color interactiveTextColor(BuildContext context) => Color.lerp(
-    context.iconTheme.color?.withOpacity(.7) ?? Colors.white,
-    Colors.blueAccent,
-    0.4,
-  )!;
+        context.iconTheme.color?.withOpacity(.7) ?? Colors.white,
+        Colors.blueAccent,
+        0.4,
+      )!;
 
   /// Whether the current platform is Apple OS.
   /// 当前平台是否苹果系列系统 (iOS & MacOS)
   bool isAppleOS(BuildContext context) => switch (context.theme.platform) {
-    TargetPlatform.iOS || TargetPlatform.macOS => true,
-    _ => false,
-  };
+        TargetPlatform.iOS || TargetPlatform.macOS => true,
+        _ => false,
+      };
 
   /// Whether the picker is under the single asset mode.
   /// 选择器是否为单选模式
@@ -241,10 +241,10 @@ abstract class AssetPickerBuilderDelegate<Asset, Path> {
   /// Determine how to browse assets in the viewer.
   /// 定义如何在查看器中浏览资源
   Future<void> viewAsset(
-      BuildContext context,
-      int index,
-      AssetEntity currentAsset,
-      );
+    BuildContext context,
+    int index,
+    AssetEntity currentAsset,
+  );
 
   /// Yes, the build method.
   /// 没错，是它是它就是它，我们亲爱的 build 方法~
@@ -290,10 +290,10 @@ abstract class AssetPickerBuilderDelegate<Asset, Path> {
   /// Animated backdrop widget for items.
   /// 部件选中时的动画遮罩部件
   Widget selectedBackdrop(
-      BuildContext context,
-      int index,
-      Asset asset,
-      );
+    BuildContext context,
+    int index,
+    Asset asset,
+  );
 
   /// Indicator for assets selected status.
   /// 资源是否已选的指示器
@@ -326,35 +326,35 @@ abstract class AssetPickerBuilderDelegate<Asset, Path> {
   /// The item builder for the assets' grid.
   /// 资源列表项的构建
   Widget assetGridItemBuilder(
-      BuildContext context,
-      int index,
-      List<Asset> currentAssets,
-      );
+    BuildContext context,
+    int index,
+    List<Asset> currentAssets,
+  );
 
   /// The [Semantics] builder for the assets' grid.
   /// 资源列表项的语义构建
   Widget assetGridItemSemanticsBuilder(
-      BuildContext context,
-      int index,
-      Asset asset,
-      Widget child,
-      );
+    BuildContext context,
+    int index,
+    Asset asset,
+    Widget child,
+  );
 
   /// The item builder for audio type of asset.
   /// 音频资源的部件构建
   Widget audioItemBuilder(
-      BuildContext context,
-      int index,
-      Asset asset,
-      );
+    BuildContext context,
+    int index,
+    Asset asset,
+  );
 
   /// The item builder for images and video type of asset.
   /// 图片和视频资源的部件构建
   Widget imageAndVideoItemBuilder(
-      BuildContext context,
-      int index,
-      Asset asset,
-      );
+    BuildContext context,
+    int index,
+    Asset asset,
+  );
 
   /// Preview button to preview selected assets.
   /// 预览已选资源的按钮
@@ -408,9 +408,9 @@ abstract class AssetPickerBuilderDelegate<Asset, Path> {
           padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
           decoration: !isAppleOS(context)
               ? BoxDecoration(
-            borderRadius: BorderRadius.circular(2),
-            color: theme.iconTheme.color!.withOpacity(0.75),
-          )
+                  borderRadius: BorderRadius.circular(2),
+                  color: theme.iconTheme.color!.withOpacity(0.75),
+                )
               : null,
           child: ScaleText(
             textDelegate.gifIndicator,
@@ -787,11 +787,11 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
 
   @override
   Future<void> selectAsset(
-      BuildContext context,
-      AssetEntity asset,
-      int index,
-      bool selected,
-      ) async {
+    BuildContext context,
+    AssetEntity asset,
+    int index,
+    bool selected,
+  ) async {
     final bool? selectPredicateResult = await selectPredicate?.call(
       context,
       asset,
@@ -865,10 +865,10 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
 
   @override
   Future<void> viewAsset(
-      BuildContext context,
-      int index,
-      AssetEntity currentAsset,
-      ) async {
+    BuildContext context,
+    int index,
+    AssetEntity currentAsset,
+  ) async {
     final DefaultAssetPickerProvider provider = context.read<DefaultAssetPickerProvider>();
     bool selectedAllAndNotSelected() => !provider.selectedAssets.contains(currentAsset) && provider.selectedMaximumAssets;
     bool selectedPhotosAndIsVideo() => isWeChatMoment && currentAsset.type == AssetType.video && provider.selectedAssets.isNotEmpty;
@@ -945,19 +945,19 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             duration: switchingPathDuration,
             child: shouldDisplayAssets
                 ? Stack(
-              children: <Widget>[
-                RepaintBoundary(
-                  child: Column(
                     children: <Widget>[
-                      Expanded(child: assetsGridBuilder(context)),
-                      if (isPreviewEnabled || !isSingleAssetMode) bottomActionBar(context),
+                      RepaintBoundary(
+                        child: Column(
+                          children: <Widget>[
+                            Expanded(child: assetsGridBuilder(context)),
+                            if (isPreviewEnabled || !isSingleAssetMode) bottomActionBar(context),
+                          ],
+                        ),
+                      ),
+                      pathEntityListBackdrop(context),
+                      pathEntityListWidget(context),
                     ],
-                  ),
-                ),
-                pathEntityListBackdrop(context),
-                pathEntityListWidget(context),
-              ],
-            )
+                  )
                 : loadingIndicator(context),
           );
         },
@@ -1051,10 +1051,10 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     return Selector<DefaultAssetPickerProvider, PathWrapper<AssetPathEntity>?>(
       selector: (_, DefaultAssetPickerProvider p) => p.currentPath,
       builder: (
-          BuildContext context,
-          PathWrapper<AssetPathEntity>? wrapper,
-          _,
-          ) {
+        BuildContext context,
+        PathWrapper<AssetPathEntity>? wrapper,
+        _,
+      ) {
         // First, we need the count of the assets.
         int totalCount = wrapper?.assetCount ?? 0;
         final Widget? specialItem;
@@ -1095,7 +1095,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
         Widget sliverGrid(BuildContext context, List<AssetEntity> assets) {
           return SliverGrid(
             delegate: SliverChildBuilderDelegate(
-                  (_, int index) => Builder(
+              (_, int index) => Builder(
                 builder: (BuildContext context) {
                   if (gridRevert) {
                     if (index < placeholderCount) {
@@ -1221,11 +1221,11 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   ///  * 在索引到达倒数第三列的时候加载更多资源。
   @override
   Widget assetGridItemBuilder(
-      BuildContext context,
-      int index,
-      List<AssetEntity> currentAssets, {
-        Widget? specialItem,
-      }) {
+    BuildContext context,
+    int index,
+    List<AssetEntity> currentAssets, {
+    Widget? specialItem,
+  }) {
     final DefaultAssetPickerProvider p = context.read<DefaultAssetPickerProvider>();
     final int length = currentAssets.length;
     final PathWrapper<AssetPathEntity>? currentWrapper = p.currentPath;
@@ -1281,11 +1281,11 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
 
   @override
   Widget assetGridItemSemanticsBuilder(
-      BuildContext context,
-      int index,
-      AssetEntity asset,
-      Widget child,
-      ) {
+    BuildContext context,
+    int index,
+    AssetEntity asset,
+    Widget child,
+  ) {
     return ValueListenableBuilder<bool>(
       valueListenable: isSwitchingPath,
       builder: (_, bool isSwitchingPath, Widget? child) {
@@ -1365,7 +1365,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     Widget? specialItem,
   }) {
     final PathWrapper<AssetPathEntity>? currentWrapper = context.select<DefaultAssetPickerProvider, PathWrapper<AssetPathEntity>?>(
-          (DefaultAssetPickerProvider p) => p.currentPath,
+      (DefaultAssetPickerProvider p) => p.currentPath,
     );
     final AssetPathEntity? currentPathEntity = currentWrapper?.path;
     final int length = assets.length + placeholderCount;
@@ -1467,20 +1467,20 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           ),
           onPressed: p.isSelectedNotEmpty
               ? () {
-            Navigator.of(context).maybePop(p.selectedAssets);
-            print(p.selectedAssets[0].id);
-          }
+                  Navigator.of(context).maybePop(p.selectedAssets);
+                  print(p.selectedAssets[0].id);
+                }
               : null,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           child: ScaleText(
             p.isSelectedNotEmpty && !isSingleAssetMode
                 ? '${textDelegate.confirm}'
-            // ' (${p.selectedAssets.length}/${p.maxAssets})'
+                // ' (${p.selectedAssets.length}/${p.maxAssets})'
                 : textDelegate.confirm,
             style: TextStyle(color: p.isSelectedNotEmpty ? Colors.black : Colors.black, fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'NimbusBold'),
             semanticsLabel: p.isSelectedNotEmpty && !isSingleAssetMode
                 ? '${semanticsTextDelegate.confirm}'
-                ' (${p.selectedAssets.length}/${p.maxAssets})'
+                    ' (${p.selectedAssets.length}/${p.maxAssets})'
                 : semanticsTextDelegate.confirm,
           ),
         );
@@ -1490,10 +1490,10 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
 
   @override
   Widget imageAndVideoItemBuilder(
-      BuildContext context,
-      int index,
-      AssetEntity asset,
-      ) {
+    BuildContext context,
+    int index,
+    AssetEntity asset,
+  ) {
     final AssetEntityImageProvider imageProvider = AssetEntityImageProvider(
       asset,
       isOriginal: false,
@@ -1505,6 +1505,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     } else if (imageProvider.imageFileType == ImageFileType.heic) {
       type = SpecialImageType.heic;
     }
+    String result = titleOfImage(imageProvider);
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -1520,7 +1521,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           gifIndicator(context, asset),
         if (asset.type == AssetType.video) // If it is a video, display the logo
           videoIndicator(context, asset),
-        if (uploadedIds != null && uploadedIds!.contains(imageProvider.entity.id))
+        if (uploadedIds != null && uploadedIds!.contains(asset.id) || uploadedIds!.contains(result))
           Container(
             alignment: Alignment.center,
             height: MediaQuery.of(context).size.height,
@@ -1541,6 +1542,19 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
         dateIndicator(context, asset),
       ],
     );
+  }
+
+  titleOfImage(AssetEntityImageProvider imageProvider) {
+    String? filename = imageProvider.entity.title;
+    String? result;
+
+    int dotIndex = filename!.indexOf('.');
+
+    if (dotIndex != -1) {
+      result = filename!.substring(0, dotIndex);
+    }
+
+    return result;
   }
 
   /// While the picker is switching path, this will displayed.
@@ -1648,7 +1662,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                   final List<PathWrapper<AssetPathEntity>> filtered = paths
                       .where(
                         (PathWrapper<AssetPathEntity> p) => p.assetCount != 0,
-                  )
+                      )
                       .toList();
                   return ListView.separated(
                     padding: const EdgeInsetsDirectional.only(top: 1),
@@ -1677,10 +1691,10 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   @override
   Widget pathEntitySelector(BuildContext context) {
     Widget _text(
-        BuildContext context,
-        String text,
-        String semanticsText,
-        ) {
+      BuildContext context,
+      String text,
+      String semanticsText,
+    ) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.only(top: 8.0),
@@ -1966,6 +1980,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   Widget selectIndicator(BuildContext context, int index, AssetEntity asset) {
     final double indicatorSize = MediaQuery.sizeOf(context).width / gridCount / 3;
     final Duration duration = switchingPathDuration * 0.75;
+    var result = imageAsset(asset);
     return Selector<DefaultAssetPickerProvider, String>(
       selector: (_, DefaultAssetPickerProvider p) => p.selectedDescriptions,
       builder: (BuildContext context, String descriptions, __) {
@@ -1978,9 +1993,9 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           decoration: BoxDecoration(
             border: !selected
                 ? Border.all(
-              color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
-              width: indicatorSize / 25,
-            )
+                    color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(result) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
+                    width: indicatorSize / 25,
+                  )
                 : null,
             color: selected ? themeColor : null,
             shape: BoxShape.circle,
@@ -2007,28 +2022,28 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
               ),
               Positioned(
                   child: InkWell(
-                    onTap: () => selectAsset(context, asset, index, selected),
-                    child: Container(
-                      width: 50,
-                      height: 100,
-                      color: Colors.transparent,
-                    ),
-                  )),
+                onTap: () => selectAsset(context, asset, index, selected),
+                child: Container(
+                  width: 50,
+                  height: 100,
+                  color: Colors.transparent,
+                ),
+              )),
             ],
           ),
         );
         if (isPreviewEnabled) {
           return Platform.isAndroid
               ? PositionedDirectional(
-            top: 0,
-            end: 0,
-            child: selectorWidget,
-          )
+                  top: 0,
+                  end: 0,
+                  child: selectorWidget,
+                )
               : Positioned(
-            top: 0,
-            right: -6,
-            child: selectorWidget,
-          );
+                  top: 0,
+                  right: -6,
+                  child: selectorWidget,
+                );
         }
         return selectorWidget;
       },
@@ -2040,77 +2055,77 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     final double indicatorSize = MediaQuery.sizeOf(context).width / gridCount / 3;
     return Platform.isAndroid
         ? Positioned.fill(
-      child: GestureDetector(
-        onTap: isPreviewEnabled ? () => viewAsset(context, index, asset) : null,
-        child: Consumer<DefaultAssetPickerProvider>(
-          builder: (_, DefaultAssetPickerProvider p, __) {
-            final int index = p.selectedAssets.indexOf(asset);
-            final bool selected = index != -1;
-            return AnimatedContainer(
-              duration: switchingPathDuration,
-              padding: EdgeInsets.all(indicatorSize * .35),
-              color: selected ? theme.colorScheme.primary.withOpacity(.45) : theme.backgroundColor.withOpacity(.1),
-              child: selected && !isSingleAssetMode
-                  ? Align(
-                alignment: AlignmentDirectional.topStart,
-                child: SizedBox(
-                  height: indicatorSize / 2.5,
-                  child: FittedBox(
-                    alignment: AlignmentDirectional.topStart,
-                    fit: BoxFit.cover,
-                    child: Text(
-                      '${index + 1}',
-                      style: TextStyle(
-                        color: theme.textTheme.bodyText1?.color?.withOpacity(.75),
-                        fontWeight: FontWeight.w600,
-                        height: 1,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-                  : const SizedBox.shrink(),
-            );
-          },
-        ),
-      ),
-    )
+            child: GestureDetector(
+              onTap: isPreviewEnabled ? () => viewAsset(context, index, asset) : null,
+              child: Consumer<DefaultAssetPickerProvider>(
+                builder: (_, DefaultAssetPickerProvider p, __) {
+                  final int index = p.selectedAssets.indexOf(asset);
+                  final bool selected = index != -1;
+                  return AnimatedContainer(
+                    duration: switchingPathDuration,
+                    padding: EdgeInsets.all(indicatorSize * .35),
+                    color: selected ? theme.colorScheme.primary.withOpacity(.45) : theme.backgroundColor.withOpacity(.1),
+                    child: selected && !isSingleAssetMode
+                        ? Align(
+                            alignment: AlignmentDirectional.topStart,
+                            child: SizedBox(
+                              height: indicatorSize / 2.5,
+                              child: FittedBox(
+                                alignment: AlignmentDirectional.topStart,
+                                fit: BoxFit.cover,
+                                child: Text(
+                                  '${index + 1}',
+                                  style: TextStyle(
+                                    color: theme.textTheme.bodyText1?.color?.withOpacity(.75),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  );
+                },
+              ),
+            ),
+          )
         : Positioned.fill(
-      child: GestureDetector(
-        onTap: isPreviewEnabled ? () => viewAsset(context, index, asset) : null,
-        child: Consumer<DefaultAssetPickerProvider>(
-          builder: (_, DefaultAssetPickerProvider p, __) {
-            final int index = p.selectedAssets.indexOf(asset);
-            final bool selected = index != -1;
-            return AnimatedContainer(
-              duration: switchingPathDuration,
-              padding: EdgeInsets.all(indicatorSize * .35),
-              color: selected ? theme.colorScheme.primary.withOpacity(.45) : theme.backgroundColor.withOpacity(.1),
-              child: selected && !isSingleAssetMode
-                  ? Align(
-                alignment: AlignmentDirectional.topEnd,
-                child: SizedBox(
-                  height: indicatorSize / 2.5,
-                  child: FittedBox(
-                    alignment: AlignmentDirectional.topStart,
-                    fit: BoxFit.cover,
-                    child: Text(
-                      '${index + 1}',
-                      style: TextStyle(
-                        color: theme.textTheme.bodyText1?.color?.withOpacity(.75),
-                        fontWeight: FontWeight.w600,
-                        height: 1,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-                  : const SizedBox.shrink(),
-            );
-          },
-        ),
-      ),
-    );
+            child: GestureDetector(
+              onTap: isPreviewEnabled ? () => viewAsset(context, index, asset) : null,
+              child: Consumer<DefaultAssetPickerProvider>(
+                builder: (_, DefaultAssetPickerProvider p, __) {
+                  final int index = p.selectedAssets.indexOf(asset);
+                  final bool selected = index != -1;
+                  return AnimatedContainer(
+                    duration: switchingPathDuration,
+                    padding: EdgeInsets.all(indicatorSize * .35),
+                    color: selected ? theme.colorScheme.primary.withOpacity(.45) : theme.backgroundColor.withOpacity(.1),
+                    child: selected && !isSingleAssetMode
+                        ? Align(
+                            alignment: AlignmentDirectional.topEnd,
+                            child: SizedBox(
+                              height: indicatorSize / 2.5,
+                              child: FittedBox(
+                                alignment: AlignmentDirectional.topStart,
+                                fit: BoxFit.cover,
+                                child: Text(
+                                  '${index + 1}',
+                                  style: TextStyle(
+                                    color: theme.textTheme.bodyText1?.color?.withOpacity(.75),
+                                    fontWeight: FontWeight.w600,
+                                    height: 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  );
+                },
+              ),
+            ),
+          );
   }
 
   /// Videos often contains various of color in the cover,
@@ -2121,117 +2136,120 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   /// 将指示器的图标和文字设置为 [Colors.white]。
   @override
   Widget videoIndicator(BuildContext context, AssetEntity asset) {
+    var result = imageAsset(asset);
+
     return Platform.isAndroid
         ? PositionedDirectional(
-      start: 0,
-      end: 0,
-      bottom: 0,
-      child: Container(
-        width: double.maxFinite,
-        height: 26,
-        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: AlignmentDirectional.bottomCenter,
-            end: AlignmentDirectional.topCenter,
-            colors: <Color>[theme.dividerColor, Colors.transparent],
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.only(start: 32),
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 3.5, right: 3),
-                child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white),
-              ),
-              Expanded(
-                child: ScaleText(
-                  textDelegate.durationIndicatorBuilder(
-                    Duration(seconds: asset.duration),
-                  ),
-                  style: TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
-                  strutStyle: const StrutStyle(
-                    forceStrutHeight: true,
-                    height: 1.4,
-                  ),
-                  maxLines: 1,
-                  maxScaleFactor: 1.2,
-                  semanticsLabel: semanticsTextDelegate.durationIndicatorBuilder(
-                    Duration(seconds: asset.duration),
-                  ),
+            start: 0,
+            end: 0,
+            bottom: 0,
+            child: Container(
+              width: double.maxFinite,
+              height: 26,
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: AlignmentDirectional.bottomCenter,
+                  end: AlignmentDirectional.topCenter,
+                  colors: <Color>[theme.dividerColor, Colors.transparent],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    )
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(start: 32),
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 3.5, right: 3),
+                      child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(result) ? Color(0xff5d5d5d) : Colors.white),
+                    ),
+                    Expanded(
+                      child: ScaleText(
+                        textDelegate.durationIndicatorBuilder(
+                          Duration(seconds: asset.duration),
+                        ),
+                        style: TextStyle(color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(result) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+                        strutStyle: const StrutStyle(
+                          forceStrutHeight: true,
+                          height: 1.4,
+                        ),
+                        maxLines: 1,
+                        maxScaleFactor: 1.2,
+                        semanticsLabel: semanticsTextDelegate.durationIndicatorBuilder(
+                          Duration(seconds: asset.duration),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
         : PositionedDirectional(
-      start: -30,
-      end: 0,
-      bottom: 0,
-      child: Container(
-        width: double.maxFinite,
-        height: 26,
-        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: AlignmentDirectional.bottomCenter,
-            end: AlignmentDirectional.topCenter,
-            colors: <Color>[theme.dividerColor, Colors.transparent],
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.only(start: 32),
-          child: Row(
-            children: <Widget>[
-              ScaleText(
-                textDelegate.durationIndicatorBuilder(
-                  Duration(seconds: asset.duration),
-                ),
-                style:  TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d): Colors.white, fontSize: 11),
-                strutStyle: const StrutStyle(
-                  forceStrutHeight: true,
-                  height: 1.4,
-                ),
-                maxLines: 1,
-                maxScaleFactor: 1.2,
-                semanticsLabel: semanticsTextDelegate.durationIndicatorBuilder(
-                  Duration(seconds: asset.duration),
+            start: -30,
+            end: 0,
+            bottom: 0,
+            child: Container(
+              width: double.maxFinite,
+              height: 26,
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: AlignmentDirectional.bottomCenter,
+                  end: AlignmentDirectional.topCenter,
+                  colors: <Color>[theme.dividerColor, Colors.transparent],
                 ),
               ),
-              // const Spacer(),
-              const Padding(
-                padding: EdgeInsets.only(top: 3.5, right: 3),
-                child: Icon(Icons.videocam, size: 16, color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(start: 32),
+                child: Row(
+                  children: <Widget>[
+                    ScaleText(
+                      textDelegate.durationIndicatorBuilder(
+                        Duration(seconds: asset.duration),
+                      ),
+                      style: TextStyle(color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(result) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+                      strutStyle: const StrutStyle(
+                        forceStrutHeight: true,
+                        height: 1.4,
+                      ),
+                      maxLines: 1,
+                      maxScaleFactor: 1.2,
+                      semanticsLabel: semanticsTextDelegate.durationIndicatorBuilder(
+                        Duration(seconds: asset.duration),
+                      ),
+                    ),
+                    // const Spacer(),
+                    Padding(
+                      padding: EdgeInsets.only(top: 3.5, right: 3),
+                      child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(result) ? Color(0xff5d5d5d) : Colors.white),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 
   Widget dateIndicator(BuildContext context, AssetEntity asset) {
+    var result = imageAsset(asset);
     return Platform.isAndroid
         ? Positioned(
-      bottom: 0,
-      top: 5,
-      child: Text(
-        asset.createDateTime.month.toString() + '.' + asset.createDateTime.day.toString() + '.' + asset.createDateTime.year.toString().substring(2),
-        style: TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
-      ),
-    )
+            bottom: 0,
+            top: 5,
+            child: Text(
+              asset.createDateTime.month.toString() + '.' + asset.createDateTime.day.toString() + '.' + asset.createDateTime.year.toString().substring(2),
+              style: TextStyle(color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(result) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
+            ),
+          )
         : Positioned(
-      bottom: 0,
-      left: 2,
-      top: 5,
-      child: Text(
-        asset.createDateTime.month.toString() + '.' + asset.createDateTime.day.toString() + '.' + asset.createDateTime.year.toString().substring(2),
-        style: TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
-      ),
-    );
+            bottom: 0,
+            left: 2,
+            top: 5,
+            child: Text(
+              asset.createDateTime.month.toString() + '.' + asset.createDateTime.day.toString() + '.' + asset.createDateTime.year.toString().substring(2),
+              style: TextStyle(color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(result) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+            ),
+          );
   }
 
   @override
@@ -2299,5 +2317,18 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
         ),
       ),
     );
+  }
+
+  imageAsset(AssetEntity asset) {
+    String? filename = asset.title;
+    String? result;
+
+    int dotIndex = filename!.indexOf('.');
+
+    if (dotIndex != -1) {
+      result = filename.substring(0, dotIndex);
+    }
+
+    return result;
   }
 }
