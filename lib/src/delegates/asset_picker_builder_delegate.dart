@@ -1528,7 +1528,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           gifIndicator(context, asset),
         if (asset.type == AssetType.video) // If it is a video, display the logo
           videoIndicator(context, asset),
-        FutureBuilder(future: fecthfile(asset.originFile),
+        FutureBuilder(future: fecthfile(asset),
             builder: (context, text){
               // if (uploadedIds != null && uploadedIds!.contains(asset.id))
               return  uploadedIds != null && uploadedIds!.contains(text.data) ?  Container(
@@ -2170,7 +2170,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   Widget videoIndicator(BuildContext context, AssetEntity asset) {
 
     // final Future<dynamic> response = fecthfile(asset.originFile);
-    return FutureBuilder(future: fecthfile(asset.originFile),
+    return FutureBuilder(future: fecthfile(asset),
         builder: (context, text){
 
           // return new SingleChildScrollView(
@@ -2404,7 +2404,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   // }
 
   Widget dateIndicator(BuildContext context, AssetEntity asset) {
-    return FutureBuilder(future: fecthfile(asset.originFile),
+    return FutureBuilder(future: fecthfile(asset),
         builder: (context, text){
           return Platform.isAndroid
               ? Positioned(
@@ -2502,27 +2502,44 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     );
   }
 
-  fecthfile(filee) async {
-    final File data = await filee;
+  fecthfile(AssetEntity asset) async {
 
-    String path = data.toString();
+    Future<String?> filename = asset.titleAsync;
     String? result;
 
-    // Find the last occurrence of '.' and '/'
-    int lastDotIndex = path.lastIndexOf('.');
-    int lastSlashIndex = path.lastIndexOf('/');
-
-    // Check if both '.' and '/' are found, and '.' comes after '/'
-    if (lastDotIndex != -1 && lastSlashIndex != -1 && lastDotIndex > lastSlashIndex) {
-      // Get the substring between the last '.' and '/'
-      result = path.substring(lastSlashIndex + 1, lastDotIndex);
+    String? a = await filename;
 
 
-      print("the main result is here$result"); // Output: IMG_5704
-    } else {
-      print("Invalid path format");
+    int dotIndex = a!.toString().indexOf('.');
+
+    // print(" i am getting filr name hereeeee");
+    // print(await a);
+
+    if (dotIndex != -1) {
+      result = a!.toString().substring(0, dotIndex);
+
+      print("we are here to check $result");
     }
 
     return result;
   }
+
+
+//
+// // Find the last occurrence of '.' and '/'
+// int lastDotIndex = path.lastIndexOf('.');
+// int lastSlashIndex = path.lastIndexOf('/');
+//
+// // Check if both '.' and '/' are found, and '.' comes after '/'
+// if (lastDotIndex != -1 && lastSlashIndex != -1 && lastDotIndex > lastSlashIndex) {
+//   // Get the substring between the last '.' and '/'
+//   result = path.substring(lastSlashIndex + 1, lastDotIndex);
+//
+//
+//   print("the main result is here$result"); // Output: IMG_5704
+// } else {
+//   print("Invalid path format");
+// }
+
+//return result;
 }
