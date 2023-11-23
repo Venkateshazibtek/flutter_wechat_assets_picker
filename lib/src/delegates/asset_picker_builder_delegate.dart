@@ -1513,6 +1513,12 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     } else if (imageProvider.imageFileType == ImageFileType.heic) {
       type = SpecialImageType.heic;
     }
+
+    String? androidImage;
+    if(Platform.isAndroid){
+      androidImage = androidIsImage(imageProvider);
+    }
+
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -1528,10 +1534,33 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           gifIndicator(context, asset),
         if (asset.type == AssetType.video) // If it is a video, display the logo
           videoIndicator(context, asset),
+
+        androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) ?
+        Container(
+          alignment: Alignment.center,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Color(0xff000000).withOpacity(0.75),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset('packages/wechat_assets_picker/assets/uploaded_icon_fill.svg'),
+              SizedBox(height: 6),
+              Text(
+                'Uploaded',
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Color(0xffC0C1C1),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'packages/wechat_assets_picker/fonts/nimbus-sans-l.regular.otf'),
+              ),
+            ],
+          ),
+        ) :
         FutureBuilder(future: fecthfile(asset),
             builder: (context, text){
               // if (uploadedIds != null && uploadedIds!.contains(asset.id))
-              return  uploadedIds != null && uploadedIds!.contains(text.data) ?  Container(
+              return uploadedIds != null && uploadedIds!.contains(text.data) ?  Container(
                 alignment: Alignment.center,
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
@@ -1575,18 +1604,32 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     return result;
   }
 
-  // titleOfImage(AssetEntityImageProvider imageProvider) {
-  //   String? filename = imageProvider.entity.title;
-  //   String? result;
-  //
-  //   int dotIndex = filename!.indexOf('.');
-  //
-  //   if (dotIndex != -1) {
-  //     result = filename!.substring(0, dotIndex);
-  //   }
-  //
-  //   return result;
-  // }
+  androidIsImage(AssetEntityImageProvider imageProvider) {
+    String? filename = imageProvider.entity.title;
+    String? result;
+
+    int dotIndex = filename!.indexOf('.');
+
+    if (dotIndex != -1) {
+      result = filename!.substring(0, dotIndex);
+    }
+
+    return result;
+  }
+
+
+  androidWithAssetImage(AssetEntity asset) {
+    String? filename = asset.title;
+    String? result;
+
+    int dotIndex = filename!.indexOf('.');
+
+    if (dotIndex != -1) {
+      result = filename!.substring(0, dotIndex);
+    }
+
+    return result;
+  }
 
   /// While the picker is switching path, this will displayed.
   /// If the user tapped on it, it'll collapse the list widget.
@@ -2169,47 +2212,142 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   @override
   Widget videoIndicator(BuildContext context, AssetEntity asset) {
 
+    String? androidImage;
+    if(Platform.isAndroid){
+      androidImage = androidWithAssetImage(asset);
+    }
+
     // final Future<dynamic> response = fecthfile(asset.originFile);
-    return FutureBuilder(future: fecthfile(asset),
-        builder: (context, text){
+    return
+      androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) ?
+      PositionedDirectional(
+        start: 0,
+        end: 0,
+        bottom: 0,
+        child: Container(
+          width: double.maxFinite,
+          height: 26,
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: AlignmentDirectional.bottomCenter,
+              end: AlignmentDirectional.topCenter,
+              colors: <Color>[theme.dividerColor, Colors.transparent],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(start: 32),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 3.5, right: 3),
+                  child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(androidImage) ? Colors.pink : Colors.amber),
+                ),
+                Expanded(
+                  child: ScaleText(
+                    textDelegate.durationIndicatorBuilder(
+                      Duration(seconds: asset.duration),
+                    ),
+                    style: TextStyle(color: uploadedIds!.contains(androidImage) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+                    strutStyle: const StrutStyle(
+                      forceStrutHeight: true,
+                      height: 1.4,
+                    ),
+                    maxLines: 1,
+                    maxScaleFactor: 1.2,
+                    semanticsLabel: semanticsTextDelegate.durationIndicatorBuilder(
+                      Duration(seconds: asset.duration),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      )
 
-          // return new SingleChildScrollView(
-          //     padding: new EdgeInsets.all(8.0),
-          //     child: uploadedIds!.contains(text.data!)  ? Text(
-          //       "kkkkk",
-          //       style: new TextStyle(
-          //         fontWeight: FontWeight.bold,
-          //         fontSize: 19.0,
-          //       ),
-          //     ) : Text(""));
+          :
+
+      FutureBuilder(future: fecthfile(asset),
+          builder: (context, text){
+
+            // return new SingleChildScrollView(
+            //     padding: new EdgeInsets.all(8.0),
+            //     child: uploadedIds!.contains(text.data!)  ? Text(
+            //       "kkkkk",
+            //       style: new TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 19.0,
+            //       ),
+            //     ) : Text(""));
 
 
-          return Platform.isAndroid
-              ? PositionedDirectional(
-            start: 0,
-            end: 0,
-            bottom: 0,
-            child: Container(
-              width: double.maxFinite,
-              height: 26,
-              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: AlignmentDirectional.bottomCenter,
-                  end: AlignmentDirectional.topCenter,
-                  colors: <Color>[theme.dividerColor, Colors.transparent],
+            return Platform.isAndroid
+                ? PositionedDirectional(
+              start: 0,
+              end: 0,
+              bottom: 0,
+              child: Container(
+                width: double.maxFinite,
+                height: 26,
+                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: AlignmentDirectional.bottomCenter,
+                    end: AlignmentDirectional.topCenter,
+                    colors: <Color>[theme.dividerColor, Colors.transparent],
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 32),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 3.5, right: 3),
+                        child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(text.data) ? Colors.pink : Colors.amber),
+                      ),
+                      Expanded(
+                        child: ScaleText(
+                          textDelegate.durationIndicatorBuilder(
+                            Duration(seconds: asset.duration),
+                          ),
+                          style: TextStyle(color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+                          strutStyle: const StrutStyle(
+                            forceStrutHeight: true,
+                            height: 1.4,
+                          ),
+                          maxLines: 1,
+                          maxScaleFactor: 1.2,
+                          semanticsLabel: semanticsTextDelegate.durationIndicatorBuilder(
+                            Duration(seconds: asset.duration),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(start: 32),
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.5, right: 3),
-                      child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(text.data) ? Colors.pink : Colors.amber),
-                    ),
-                    Expanded(
-                      child: ScaleText(
+            )
+                : PositionedDirectional(
+              start: -30,
+              end: 0,
+              bottom: 0,
+              child: Container(
+                width: double.maxFinite,
+                height: 26,
+                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: AlignmentDirectional.bottomCenter,
+                    end: AlignmentDirectional.topCenter,
+                    colors: <Color>[theme.dividerColor, Colors.transparent],
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 32),
+                  child: Row(
+                    children: <Widget>[
+                      ScaleText(
                         textDelegate.durationIndicatorBuilder(
                           Duration(seconds: asset.duration),
                         ),
@@ -2224,57 +2362,17 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                           Duration(seconds: asset.duration),
                         ),
                       ),
-                    ),
-                  ],
+                      // const Spacer(),
+                      Padding(
+                        padding: EdgeInsets.only(top: 3.5, right: 3),
+                        child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : Colors.white),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-              : PositionedDirectional(
-            start: -30,
-            end: 0,
-            bottom: 0,
-            child: Container(
-              width: double.maxFinite,
-              height: 26,
-              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: AlignmentDirectional.bottomCenter,
-                  end: AlignmentDirectional.topCenter,
-                  colors: <Color>[theme.dividerColor, Colors.transparent],
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(start: 32),
-                child: Row(
-                  children: <Widget>[
-                    ScaleText(
-                      textDelegate.durationIndicatorBuilder(
-                        Duration(seconds: asset.duration),
-                      ),
-                      style: TextStyle(color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
-                      strutStyle: const StrutStyle(
-                        forceStrutHeight: true,
-                        height: 1.4,
-                      ),
-                      maxLines: 1,
-                      maxScaleFactor: 1.2,
-                      semanticsLabel: semanticsTextDelegate.durationIndicatorBuilder(
-                        Duration(seconds: asset.duration),
-                      ),
-                    ),
-                    // const Spacer(),
-                    Padding(
-                      padding: EdgeInsets.only(top: 3.5, right: 3),
-                      child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
+            );
+          });
 
 
 
@@ -2404,35 +2502,56 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   // }
 
   Widget dateIndicator(BuildContext context, AssetEntity asset) {
-    return FutureBuilder(future: fecthfile(asset),
-        builder: (context, text){
-          return Platform.isAndroid
-              ? Positioned(
-            bottom: 0,
-            top: 5,
-            child: Text(
-              asset.createDateTime.month.toString() +
-                  '.' +
-                  asset.createDateTime.day.toString() +
-                  '.' +
-                  asset.createDateTime.year.toString().substring(2),
-              style: TextStyle(color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
-            ),
-          )
-              : Positioned(
-            bottom: 0,
-            left: 2,
-            top: 5,
-            child: Text(
-              asset.createDateTime.month.toString() +
-                  '.' +
-                  asset.createDateTime.day.toString() +
-                  '.' +
-                  asset.createDateTime.year.toString().substring(2),
-              style: TextStyle(color: uploadedIds!.contains(text.data)  ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
-            ),
-          );
-        });
+    String? androidImage;
+    if(Platform.isAndroid){
+      androidImage = androidWithAssetImage(asset);
+    }
+
+    return
+      androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) ?
+      Positioned(
+        bottom: 0,
+        top: 5,
+        child: Text(
+          asset.createDateTime.month.toString() +
+              '.' +
+              asset.createDateTime.day.toString() +
+              '.' +
+              asset.createDateTime.year.toString().substring(2),
+          style: TextStyle(color: uploadedIds!.contains(androidImage) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
+        ),
+      )
+          :
+
+      FutureBuilder(future: fecthfile(asset),
+          builder: (context, text){
+            return Platform.isAndroid
+                ? Positioned(
+              bottom: 0,
+              top: 5,
+              child: Text(
+                asset.createDateTime.month.toString() +
+                    '.' +
+                    asset.createDateTime.day.toString() +
+                    '.' +
+                    asset.createDateTime.year.toString().substring(2),
+                style: TextStyle(color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
+              ),
+            )
+                : Positioned(
+              bottom: 0,
+              left: 2,
+              top: 5,
+              child: Text(
+                asset.createDateTime.month.toString() +
+                    '.' +
+                    asset.createDateTime.day.toString() +
+                    '.' +
+                    asset.createDateTime.year.toString().substring(2),
+                style: TextStyle(color: uploadedIds!.contains(text.data)  ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+              ),
+            );
+          });
   }
 
   @override
