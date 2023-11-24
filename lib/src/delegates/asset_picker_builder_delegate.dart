@@ -2262,7 +2262,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top: 3.5, right: 3),
-                  child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(androidImage) || uploadedIds!.contains(asset.id) ? Colors.pink : Colors.amber),
+                  child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(androidImage) || uploadedIds!.contains(asset.id) ?  Color(0xff5d5d5d) : Colors.white),
                 ),
                 Expanded(
                   child: ScaleText(
@@ -2310,7 +2310,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(top: 3.5, right: 3),
-                        child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(text.data) || uploadedIds!.contains(asset.id) ? Colors.pink : Colors.amber),
+                        child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(text.data) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white),
                       ),
                       Expanded(
                         child: ScaleText(
