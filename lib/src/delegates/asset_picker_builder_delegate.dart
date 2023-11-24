@@ -1535,7 +1535,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
         if (asset.type == AssetType.video) // If it is a video, display the logo
           videoIndicator(context, asset),
 
-        androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) ?
+        androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) || uploadedIds!.contains(asset.id) ?
         Container(
           alignment: Alignment.center,
           height: MediaQuery.of(context).size.height,
@@ -1560,7 +1560,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
         FutureBuilder(future: fecthfile(asset),
             builder: (context, text){
               // if (uploadedIds != null && uploadedIds!.contains(asset.id))
-              return uploadedIds != null && uploadedIds!.contains(text.data) ?  Container(
+              return uploadedIds != null && uploadedIds!.contains(text.data) || uploadedIds!.contains(asset.id)?  Container(
                 alignment: Alignment.center,
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
@@ -1588,32 +1588,24 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     );
   }
 
-
   titleOfImage(AssetEntityImageProvider imageProvider) {
     Future<String?> filename = imageProvider.entity.titleAsync.then((value){  print(value);});
     String? result;
-
     int dotIndex = filename!.toString().indexOf('.');
 
     if (dotIndex != -1) {
       result = filename!.toString().substring(0, dotIndex);
-
-      print("we are here to check $result");
     }
-
     return result;
   }
 
   androidIsImage(AssetEntityImageProvider imageProvider) {
     String? filename = imageProvider.entity.title;
     String? result;
-
     int dotIndex = filename!.indexOf('.');
-
     if (dotIndex != -1) {
       result = filename!.substring(0, dotIndex);
     }
-
     return result;
   }
 
@@ -1621,13 +1613,10 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   androidWithAssetImage(AssetEntity asset) {
     String? filename = asset.title;
     String? result;
-
     int dotIndex = filename!.indexOf('.');
-
     if (dotIndex != -1) {
       result = filename!.substring(0, dotIndex);
     }
-
     return result;
   }
 
@@ -2066,7 +2055,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
       builder: (BuildContext context, String descriptions, __) {
         final bool selected = descriptions.contains(asset.toString());
         final Widget innerSelector =
-        androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) ?
+        androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) || uploadedIds!.contains(asset.id) ?
         AnimatedContainer(
           duration: duration,
           width: indicatorSize / (isAppleOS(context) ? 1.25 : 1.5),
@@ -2075,7 +2064,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           decoration: BoxDecoration(
             border: !selected
                 ? Border.all(
-              color: uploadedIds!.contains(androidImage) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
+              color: uploadedIds!.contains(androidImage) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
               width: indicatorSize / 25,
             )
                 : null,
@@ -2101,7 +2090,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
               decoration: BoxDecoration(
                 border: !selected
                     ? Border.all(
-                  color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
+                  color: uploadedIds!.contains(text.data) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
                   width: indicatorSize / 25,
                 )
                     : null,
@@ -2246,15 +2235,12 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   /// 将指示器的图标和文字设置为 [Colors.white]。
   @override
   Widget videoIndicator(BuildContext context, AssetEntity asset) {
-
     String? androidImage;
     if(Platform.isAndroid){
       androidImage = androidWithAssetImage(asset);
     }
-
-    // final Future<dynamic> response = fecthfile(asset.originFile);
     return
-      androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) ?
+      androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) || uploadedIds!.contains(asset.id) ?
       PositionedDirectional(
         start: 0,
         end: 0,
@@ -2276,14 +2262,14 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top: 3.5, right: 3),
-                  child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(androidImage) ? Colors.pink : Colors.amber),
+                  child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(androidImage) || uploadedIds!.contains(asset.id) ? Colors.pink : Colors.amber),
                 ),
                 Expanded(
                   child: ScaleText(
                     textDelegate.durationIndicatorBuilder(
                       Duration(seconds: asset.duration),
                     ),
-                    style: TextStyle(color: uploadedIds!.contains(androidImage) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+                    style: TextStyle(color: uploadedIds!.contains(androidImage) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
                     strutStyle: const StrutStyle(
                       forceStrutHeight: true,
                       height: 1.4,
@@ -2299,24 +2285,9 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             ),
           ),
         ),
-      )
-
-          :
-
+      ) :
       FutureBuilder(future: fecthfile(asset),
           builder: (context, text){
-
-            // return new SingleChildScrollView(
-            //     padding: new EdgeInsets.all(8.0),
-            //     child: uploadedIds!.contains(text.data!)  ? Text(
-            //       "kkkkk",
-            //       style: new TextStyle(
-            //         fontWeight: FontWeight.bold,
-            //         fontSize: 19.0,
-            //       ),
-            //     ) : Text(""));
-
-
             return Platform.isAndroid
                 ? PositionedDirectional(
               start: 0,
@@ -2339,14 +2310,14 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(top: 3.5, right: 3),
-                        child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(text.data) ? Colors.pink : Colors.amber),
+                        child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(text.data) || uploadedIds!.contains(asset.id) ? Colors.pink : Colors.amber),
                       ),
                       Expanded(
                         child: ScaleText(
                           textDelegate.durationIndicatorBuilder(
                             Duration(seconds: asset.duration),
                           ),
-                          style: TextStyle(color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+                          style: TextStyle(color: uploadedIds!.contains(text.data) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
                           strutStyle: const StrutStyle(
                             forceStrutHeight: true,
                             height: 1.4,
@@ -2386,7 +2357,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                         textDelegate.durationIndicatorBuilder(
                           Duration(seconds: asset.duration),
                         ),
-                        style: TextStyle(color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+                        style: TextStyle(color: uploadedIds!.contains(text.data) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
                         strutStyle: const StrutStyle(
                           forceStrutHeight: true,
                           height: 1.4,
@@ -2400,7 +2371,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                       // const Spacer(),
                       Padding(
                         padding: EdgeInsets.only(top: 3.5, right: 3),
-                        child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : Colors.white),
+                        child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(text.data) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white),
                       ),
                     ],
                   ),
@@ -2408,133 +2379,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
               ),
             );
           });
-
-
-
   }
-
-  // Widget videoIndicator(BuildContext context, AssetEntity asset) {
-  //   var a;
-  //
-  //   final Future<dynamic> response = fecthfile(asset.originFile);
-  //
-  //
-  //   // response.then((result) async {
-  //   //
-  //   //   n = result;
-  //   //   print("the main result is here$result");
-  //   //
-  //   //   // Output: Your result
-  //   // });
-  //
-  //   return FutureBuilder(future: response.then((value) {
-  //     print("king of the $value");
-  //     if(uploadedIds!.contains(value)){
-  //       print("yes i am coming");
-  //     }else{
-  //       print("Noooooooo");
-  //     }
-  //     return Platform.isAndroid
-  //         ? PositionedDirectional(
-  //       start: 0,
-  //       end: 0,
-  //       bottom: 0,
-  //       child: Container(
-  //         width: double.maxFinite,
-  //         height: 26,
-  //         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-  //         decoration: BoxDecoration(
-  //           gradient: LinearGradient(
-  //             begin: AlignmentDirectional.bottomCenter,
-  //             end: AlignmentDirectional.topCenter,
-  //             colors: <Color>[theme.dividerColor, Colors.transparent],
-  //           ),
-  //         ),
-  //         child: Padding(
-  //           padding: const EdgeInsetsDirectional.only(start: 32),
-  //           child: Row(
-  //             children: <Widget>[
-  //               Padding(
-  //                 padding: EdgeInsets.only(top: 3.5, right: 3),
-  //                 child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(value) ? Colors.pink : Colors.amber),
-  //               ),
-  //               Expanded(
-  //                 child: ScaleText(
-  //                   textDelegate.durationIndicatorBuilder(
-  //                     Duration(seconds: asset.duration),
-  //                   ),
-  //                   style: TextStyle(color: uploadedIds!.contains(value) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
-  //                   strutStyle: const StrutStyle(
-  //                     forceStrutHeight: true,
-  //                     height: 1.4,
-  //                   ),
-  //                   maxLines: 1,
-  //                   maxScaleFactor: 1.2,
-  //                   semanticsLabel: semanticsTextDelegate.durationIndicatorBuilder(
-  //                     Duration(seconds: asset.duration),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     )
-  //         : PositionedDirectional(
-  //       start: -30,
-  //       end: 0,
-  //       bottom: 0,
-  //       child: Container(
-  //         width: double.maxFinite,
-  //         height: 26,
-  //         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-  //         decoration: BoxDecoration(
-  //           gradient: LinearGradient(
-  //             begin: AlignmentDirectional.bottomCenter,
-  //             end: AlignmentDirectional.topCenter,
-  //             colors: <Color>[theme.dividerColor, Colors.transparent],
-  //           ),
-  //         ),
-  //         child: Padding(
-  //           padding: const EdgeInsetsDirectional.only(start: 32),
-  //           child: Row(
-  //             children: <Widget>[
-  //               ScaleText(
-  //                 textDelegate.durationIndicatorBuilder(
-  //                   Duration(seconds: asset.duration),
-  //                 ),
-  //                 style: TextStyle(color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
-  //                 strutStyle: const StrutStyle(
-  //                   forceStrutHeight: true,
-  //                   height: 1.4,
-  //                 ),
-  //                 maxLines: 1,
-  //                 maxScaleFactor: 1.2,
-  //                 semanticsLabel: semanticsTextDelegate.durationIndicatorBuilder(
-  //                   Duration(seconds: asset.duration),
-  //                 ),
-  //               ),
-  //               // const Spacer(),
-  //               Padding(
-  //                 padding: EdgeInsets.only(top: 3.5, right: 3),
-  //                 child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     );
-  //   }),
-  //       builder: (context,snap){
-  //
-  //     return Container();
-  //
-  //
-  //       });
-  //  // print("the main result is here${response.toString()}");
-  //
-  //
-  // }
 
   Widget dateIndicator(BuildContext context, AssetEntity asset) {
     String? androidImage;
@@ -2543,7 +2388,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     }
 
     return
-      androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) ?
+      androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) || uploadedIds!.contains(asset.id) ?
       Positioned(
         bottom: 0,
         top: 5,
@@ -2553,7 +2398,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
               asset.createDateTime.day.toString() +
               '.' +
               asset.createDateTime.year.toString().substring(2),
-          style: TextStyle(color: uploadedIds!.contains(androidImage) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
+          style: TextStyle(color: uploadedIds!.contains(androidImage) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
         ),
       )
           :
@@ -2570,7 +2415,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                     asset.createDateTime.day.toString() +
                     '.' +
                     asset.createDateTime.year.toString().substring(2),
-                style: TextStyle(color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
+                style: TextStyle(color: uploadedIds!.contains(text.data) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
               ),
             )
                 : Positioned(
@@ -2583,7 +2428,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                     asset.createDateTime.day.toString() +
                     '.' +
                     asset.createDateTime.year.toString().substring(2),
-                style: TextStyle(color: uploadedIds!.contains(text.data)  ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+                style: TextStyle(color: uploadedIds!.contains(text.data) || uploadedIds!.contains(asset.id)  ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
               ),
             );
           });
@@ -2660,40 +2505,12 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
 
     Future<String?> filename = asset.titleAsync;
     String? result;
-
     String? a = await filename;
-
-
     int dotIndex = a!.toString().indexOf('.');
 
-    // print(" i am getting filr name hereeeee");
-    // print(await a);
-
     if (dotIndex != -1) {
-      result = a!.toString().substring(0, dotIndex);
-
-      print("we are here to check $result");
+      result = a.toString().substring(0, dotIndex);
     }
-
     return result;
   }
-
-
-//
-// // Find the last occurrence of '.' and '/'
-// int lastDotIndex = path.lastIndexOf('.');
-// int lastSlashIndex = path.lastIndexOf('/');
-//
-// // Check if both '.' and '/' are found, and '.' comes after '/'
-// if (lastDotIndex != -1 && lastSlashIndex != -1 && lastDotIndex > lastSlashIndex) {
-//   // Get the substring between the last '.' and '/'
-//   result = path.substring(lastSlashIndex + 1, lastDotIndex);
-//
-//
-//   print("the main result is here$result"); // Output: IMG_5704
-// } else {
-//   print("Invalid path format");
-// }
-
-//return result;
 }
