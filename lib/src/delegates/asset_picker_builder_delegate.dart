@@ -2055,12 +2055,19 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
   Widget selectIndicator(BuildContext context, int index, AssetEntity asset) {
     final double indicatorSize = MediaQuery.sizeOf(context).width / gridCount / 3;
     final Duration duration = switchingPathDuration * 0.75;
-    //  var result = imageAsset(asset);
+
+    String? androidImage;
+    if(Platform.isAndroid){
+      androidImage = androidWithAssetImage(asset);
+    }
+
     return Selector<DefaultAssetPickerProvider, String>(
       selector: (_, DefaultAssetPickerProvider p) => p.selectedDescriptions,
       builder: (BuildContext context, String descriptions, __) {
         final bool selected = descriptions.contains(asset.toString());
-        final Widget innerSelector = AnimatedContainer(
+        final Widget innerSelector =
+        androidImage!= null && uploadedIds != null && uploadedIds!.contains(androidImage) ?
+        AnimatedContainer(
           duration: duration,
           width: indicatorSize / (isAppleOS(context) ? 1.25 : 1.5),
           height: indicatorSize / (isAppleOS(context) ? 1.25 : 1.5),
@@ -2068,7 +2075,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           decoration: BoxDecoration(
             border: !selected
                 ? Border.all(
-              color: uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
+              color: uploadedIds!.contains(androidImage) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
               width: indicatorSize / 25,
             )
                 : null,
@@ -2082,6 +2089,34 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
               child: selected ? const Icon(Icons.check) : const SizedBox.shrink(),
             ),
           ),
+        ):
+        FutureBuilder(
+          future: fecthfile(asset),
+          builder: (context,text){
+            return  AnimatedContainer(
+              duration: duration,
+              width: indicatorSize / (isAppleOS(context) ? 1.25 : 1.5),
+              height: indicatorSize / (isAppleOS(context) ? 1.25 : 1.5),
+              padding: EdgeInsets.all(indicatorSize / 10),
+              decoration: BoxDecoration(
+                border: !selected
+                    ? Border.all(
+                  color: uploadedIds!.contains(text.data) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
+                  width: indicatorSize / 25,
+                )
+                    : null,
+                color: selected ? themeColor : null,
+                shape: BoxShape.circle,
+              ),
+              child: FittedBox(
+                child: AnimatedSwitcher(
+                  duration: duration,
+                  reverseDuration: duration,
+                  child: selected ? const Icon(Icons.check) : const SizedBox.shrink(),
+                ),
+              ),
+            );
+          },
         );
         final Widget selectorWidget = GestureDetector(
           behavior: HitTestBehavior.opaque,
