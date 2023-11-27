@@ -2022,6 +2022,8 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             final String? imageSource = snapshot.data;
 
             return AnimatedContainer(
+              key: ValueKey<String?>(imageSource),
+              // Add a key here
               duration: duration,
               width: indicatorSize / (isAppleOS(context) ? 1.25 : 1.5),
               height: indicatorSize / (isAppleOS(context) ? 1.25 : 1.5),
