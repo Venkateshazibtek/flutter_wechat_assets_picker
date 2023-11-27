@@ -2010,10 +2010,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     final double indicatorSize = MediaQuery.sizeOf(context).width / gridCount / 3;
     final Duration duration = switchingPathDuration * 0.75;
 
-    String? androidImage;
-    if (Platform.isAndroid) {
-      androidImage = androidWithAssetImage(asset);
-    }
+    String? androidImage = Platform.isAndroid ? androidWithAssetImage(asset) : null;
 
     return Selector<DefaultAssetPickerProvider, String>(
       selector: (_, DefaultAssetPickerProvider p) => p.selectedDescriptions,
@@ -2032,7 +2029,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
               decoration: BoxDecoration(
                 border: !selected
                     ? Border.all(
-                        color: uploadedIds!.contains(imageSource) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white,
+                        color: uploadedIds!.contains(imageSource) || uploadedIds!.contains(asset.id) ? const Color(0xff5d5d5d) : Colors.white,
                         width: indicatorSize / 25,
                       )
                     : null,
@@ -2063,17 +2060,19 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                 child: (!isPreviewEnabled && isSingleAssetMode && !selected) ? const SizedBox.shrink() : innerSelector,
               ),
               Positioned(
-                  child: InkWell(
-                onTap: () => selectAsset(context, asset, index, selected),
-                child: Container(
-                  width: 50,
-                  height: 100,
-                  color: Colors.transparent,
+                child: InkWell(
+                  onTap: () => selectAsset(context, asset, index, selected),
+                  child: Container(
+                    width: 50,
+                    height: 100,
+                    color: Colors.transparent,
+                  ),
                 ),
-              )),
+              ),
             ],
           ),
         );
+
         if (isPreviewEnabled) {
           return Platform.isAndroid
               ? PositionedDirectional(
