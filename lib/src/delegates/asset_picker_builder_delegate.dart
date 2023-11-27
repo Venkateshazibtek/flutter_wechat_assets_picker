@@ -2022,7 +2022,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
         final Widget innerSelector = FutureBuilder(
           future: androidImage != null && uploadedIds != null && uploadedIds!.contains(androidImage) ? Future.value(androidImage) : fecthfile(asset),
           builder: (context, snapshot) {
-            final String? imageSource = snapshot.data as String?;
+            final String? imageSource = snapshot.data;
 
             return AnimatedContainer(
               duration: duration,
@@ -2032,7 +2032,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
               decoration: BoxDecoration(
                 border: !selected
                     ? Border.all(
-                        color: uploadedIds!.contains(imageSource) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
+                        color: uploadedIds!.contains(imageSource) || uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : Colors.white,
                         width: indicatorSize / 25,
                       )
                     : null,
@@ -2188,7 +2188,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
     return FutureBuilder(
       future: getImageSource(),
       builder: (context, snapshot) {
-        final String? imageSource = snapshot.data as String?;
+        final String? imageSource = snapshot.data;
         final bool isAndroid = Platform.isAndroid;
 
         return PositionedDirectional(
