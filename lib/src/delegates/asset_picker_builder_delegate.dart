@@ -1520,7 +1520,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           gifIndicator(context, asset),
         if (asset.type == AssetType.video) // If it is a video, display the logo
           videoIndicator(context, asset),
-        if (uploadedIds != null && uploadedIds!.contains(imageProvider.entity.id) || uploadedIds!.contains(imageProvider.entity.createDateSecond))
+        if (imageProvider.entity.createDateSecond != null && uploadedIds != null && uploadedIds!.contains(imageProvider.entity.createDateSecond.toString()) || uploadedIds!.contains(imageProvider.entity.id))
           Container(
             alignment: Alignment.center,
             height: MediaQuery.of(context).size.height,
@@ -1978,7 +1978,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           decoration: BoxDecoration(
             border: !selected
                 ? Border.all(
-              color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(asset.createDateSecond) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
+              color: uploadedIds!.contains(asset.createDateSecond.toString()) ||  uploadedIds!.contains(asset.id) ? Color(0xff5d5d5d) : context.theme.unselectedWidgetColor,
               width: indicatorSize / 25,
             )
                 : null,
@@ -2143,14 +2143,14 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: 3.5, right: 3),
-                child: Icon(Icons.videocam, size: 16, color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(asset.createDateSecond) ? Color(0xff5d5d5d) : Colors.white),
+                child: Icon(Icons.videocam, size: 16, color:  uploadedIds!.contains(asset.createDateSecond.toString()) || uploadedIds!.contains(asset.id)  ? Color(0xff5d5d5d) : Colors.white),
               ),
               Expanded(
                 child: ScaleText(
                   textDelegate.durationIndicatorBuilder(
                     Duration(seconds: asset.duration),
                   ),
-                  style: TextStyle(color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(asset.createDateSecond) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+                  style: TextStyle(color: uploadedIds!.contains(asset.createDateSecond.toString()) || uploadedIds!.contains(asset.id)  ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
                   strutStyle: const StrutStyle(
                     forceStrutHeight: true,
                     height: 1.4,
@@ -2190,7 +2190,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
                 textDelegate.durationIndicatorBuilder(
                   Duration(seconds: asset.duration),
                 ),
-                style:  TextStyle(color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(asset.createDateSecond) ? Color(0xff5d5d5d): Colors.white, fontSize: 11),
+                style:  TextStyle(color: uploadedIds!.contains(asset.createDateSecond.toString()) || uploadedIds!.contains(asset.id)  ? Color(0xff5d5d5d): Colors.white, fontSize: 11),
                 strutStyle: const StrutStyle(
                   forceStrutHeight: true,
                   height: 1.4,
@@ -2220,7 +2220,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
       top: 5,
       child: Text(
         asset.createDateTime.month.toString() + '.' + asset.createDateTime.day.toString() + '.' + asset.createDateTime.year.toString().substring(2),
-        style: TextStyle(color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(asset.createDateSecond) ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
+        style: TextStyle(color: uploadedIds!.contains(asset.createDateSecond.toString()) || uploadedIds!.contains(asset.id)  ? Color(0xff5d5d5d) : Colors.white, fontSize: 13),
       ),
     )
         : Positioned(
@@ -2229,7 +2229,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
       top: 5,
       child: Text(
         asset.createDateTime.month.toString() + '.' + asset.createDateTime.day.toString() + '.' + asset.createDateTime.year.toString().substring(2),
-        style: TextStyle(color: uploadedIds!.contains(asset.id) || uploadedIds!.contains(asset.createDateSecond) ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
+        style: TextStyle(color: uploadedIds!.contains(asset.createDateSecond.toString()) || uploadedIds!.contains(asset.id)  ? Color(0xff5d5d5d) : Colors.white, fontSize: 11),
       ),
     );
   }
