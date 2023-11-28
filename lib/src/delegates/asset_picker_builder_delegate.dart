@@ -1520,7 +1520,7 @@ class DefaultAssetPickerBuilderDelegate extends AssetPickerBuilderDelegate<Asset
           gifIndicator(context, asset),
         if (asset.type == AssetType.video) // If it is a video, display the logo
           videoIndicator(context, asset),
-        if (uploadedIds != null && uploadedIds!.contains(imageProvider.entity.id) || uploadedIds!.contains(imageProvider.entity.id))
+        if (uploadedIds != null && uploadedIds!.contains(imageProvider.entity.id) || uploadedIds!.contains(imageProvider.entity.createDateSecond))
           Container(
             alignment: Alignment.center,
             height: MediaQuery.of(context).size.height,
